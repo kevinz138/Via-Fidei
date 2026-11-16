@@ -184,6 +184,10 @@ h1 em {
     color: var(--branco);
 }
 
+.btn-default:hover a {
+    color: var(--branco);
+}
+
 .btn-default a {
     color: var(--azul-marinho);
 }
@@ -1321,4 +1325,3 @@ input:focus {
 .canvas-wrap.radar { height: 410px; }
 .canvas-wrap.year { height: 120px; }
 .canvas-wrap.medium-wide { height: 275px; }
-
