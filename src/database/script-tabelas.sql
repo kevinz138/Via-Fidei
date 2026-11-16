@@ -1,58 +1,86 @@
--- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
--- Você precisa executar os comandos no banco de dados para criar as tabelas,
--- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
+CREATE DATABASE viafidei;
 
-/*
-comandos para mysql server
-*/
+USE viafidei;
 
-CREATE DATABASE aquatech;
-
-USE aquatech;
-
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
-);
-
+-- 1. Tabela Usuario (Forte - Login e Cadastro)
 CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+-- 2. Tabelas de Domínio / Catálogo (Fortes)
+CREATE TABLE intencao (
+    idIntencao TINYINT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(40) NOT NULL UNIQUE
 );
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE tipoOracao (
+    idTipoOracao TINYINT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(40) NOT NULL UNIQUE
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	temperatura DECIMAL,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
+CREATE TABLE sacramento (
+    idSacramento TINYINT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(30) NOT NULL UNIQUE
 );
 
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
+CREATE TABLE tempoLiturgico (
+    idTempoLiturgico TINYINT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(20) NOT NULL,
+    cor VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE anoLiturgico (
+    anoInicio SMALLINT PRIMARY KEY, -- Ex: 2026 = ano que começa no Advento de 2026
+    inicioAdvento DATE,
+    natal DATE,
+    batismoSenhor DATE,
+    quartaCinzas DATE,
+    pascoa DATE,
+    pentecostes DATE
+);
+
+-- 3. Tabela Associativa N:N (Usuario <-> Sacramento)
+CREATE TABLE usuarioSacramento (
+    fkUsuario INT NOT NULL,
+    fkSacramento TINYINT NOT NULL,
+    PRIMARY KEY (fkUsuario, fkSacramento),
+    CONSTRAINT fkUsuarioSacramentoUsuario FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario),
+    CONSTRAINT fkUsuarioSacramentoSacramento FOREIGN KEY (fkSacramento) REFERENCES sacramento(idSacramento)
+);
+
+-- 4. Tabelas de Registros e Práticas (Relacionamentos Fracos / Dependentes do Usuário)
+CREATE TABLE oracao (
+    idOracao INT PRIMARY KEY AUTO_INCREMENT,
+    fkUsuario INT NOT NULL,
+    fkIntencao TINYINT NOT NULL,
+    fkTipoOracao TINYINT NOT NULL,
+    minutos SMALLINT NOT NULL,
+    dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fkOracaoUsuario FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario),
+    CONSTRAINT fkOracaoIntencao FOREIGN KEY (fkIntencao) REFERENCES intencao(idIntencao),
+    CONSTRAINT fkOracaoTipo FOREIGN KEY (fkTipoOracao) REFERENCES tipoOracao(idTipoOracao)
+);
+
+CREATE TABLE consultaCalendario (
+    idConsulta INT PRIMARY KEY AUTO_INCREMENT,
+    fkUsuario INT NOT NULL,
+    dataConsultada DATE NOT NULL,
+    fkTempoLiturgico TINYINT NOT NULL,
+    dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fkConsultaUsuario FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario),
+    CONSTRAINT fkConsultaTempo FOREIGN KEY (fkTempoLiturgico) REFERENCES tempoLiturgico(idTempoLiturgico)
+);
+
+CREATE TABLE quaresmaPratica (
+    idQuaresmaPratica INT PRIMARY KEY AUTO_INCREMENT,
+    fkUsuario INT NOT NULL,
+    dataPratica DATE NOT NULL,
+    pratica ENUM('oracao', 'jejum', 'esmola') NOT NULL,
+    UNIQUE (fkUsuario, dataPratica, pratica), -- impede marcar duas vezes o mesmo dia
+    CONSTRAINT fkQuaresmaUsuario FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario)
+);
+
+SELECT * FROM usuario;

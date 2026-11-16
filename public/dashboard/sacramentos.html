@@ -48,7 +48,7 @@
 <body>
     <main class="data-main">
         <div class="sacrament-layout">
-            <form class="input-card">
+            <form class="input-card" id="sacrament-form">
                 <span class="card-number">01</span>
                 <h2>Marque o que já recebeu</h2>
                 <div class="check-list">
@@ -58,9 +58,10 @@
                     <label><input type="checkbox" value="Reconciliação">Reconciliação</label>
                     <label><input type="checkbox" value="Unção">Unção</label>
                     <label><input type="checkbox" value="Ordem">Ordem</label>
-                    <label><input type="checkbox" value="Matrimonio">Matrimônio</label>
+                    <label><input type="checkbox" value="Matrimônio">Matrimônio</label>
                 </div>
                 <button type="submit">Salvar</button>
+                <p class="form-feedback" id="sacrament-feedback"></p>
             </form>
             <section class="data-card">
                 <span class="card-number">02</span>
@@ -76,24 +77,142 @@
 </html>
 
 <script>
-  const ctx = document.getElementById('sacrament-radar');
+    // Ordem em que os sacramentos aparecem no radar (cada um é uma "ponta")
+    const labels = ['Batismo', 'Crisma', 'Eucaristia', 'Reconciliação', 'Unção', 'Ordem', 'Matrimônio'];
+    const zeros = labels.map(() => 0);
 
-  new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
+    // 1) QUEM É A PESSOA? O login guardou o id dela na sessão do navegador.
+    //    Se não tem id, ela não fez login: manda de volta para o login.
+    const idUsuario = sessionStorage.ID_USUARIO;
+    if (idUsuario == null) {
+        window.location = '/login.html';
     }
-  });
+
+    // Elementos da tela que vamos usar
+    const form = document.getElementById('sacrament-form');
+    const checks = document.querySelectorAll('.check-list input');
+    const feedback = document.getElementById('sacrament-feedback');
+
+    // Aparência padrão dos gráficos (cor e fonte do texto)
+    Chart.defaults.color = '#596579';
+    Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
+    Chart.defaults.font.size = 12;
+
+    // 2) O GRÁFICO nasce zerado. Os números reais chegam do banco em carregarDados().
+    const radar = new Chart(document.getElementById('sacrament-radar'), {
+        type: 'radar',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Você', data: zeros,
+                    borderColor: '#c7a45b', backgroundColor: 'rgba(199,164,91,.25)',
+                    pointRadius: 0, borderWidth: 2
+                },
+                {
+                    label: 'Média da comunidade', data: zeros,
+                    borderColor: '#294a73', backgroundColor: 'rgba(41,74,115,.2)',
+                    pointRadius: 0, borderWidth: 2
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 7 } },
+                tooltip: { backgroundColor: '#172d50', padding: 10, displayColors: false }
+            },
+            scales: {
+                r: {
+                    min: 0, max: 1,               // o radar vai de 0 (nada) a 1 (100%)
+                    ticks: { display: false },
+                    grid: { color: '#e6d5ae' },
+                    angleLines: { color: '#e6d5ae' },
+                    pointLabels: { color: '#172d50', font: { size: 10 } }
+                }
+            }
+        }
+    });
+
+    // Função auxiliar: faz um GET e devolve o JSON (ou dá erro se o servidor recusar)
+    function buscarJson(url) {
+        return fetch(url).then(function (resposta) {
+            if (!resposta.ok) {
+                throw new Error('Erro ' + resposta.status + ' em ' + url);
+            }
+            return resposta.json();
+        });
+    }
+
+    // 3) BUSCAR NO BANCO e redesenhar. É chamada ao abrir a página e depois de salvar.
+    function carregarDados() {
+        return Promise.all([
+            buscarJson('/sacramentos/usuario/' + idUsuario),   // o que ESTA pessoa marcou
+            buscarJson('/sacramentos/comunidade')              // % de todo mundo
+        ]).then(function (respostas) {
+            const recebidos = respostas[0].map(function (linha) { return linha.nome; });
+            const comunidade = respostas[1];
+
+            // deixa os checkboxes iguais ao que está no banco
+            checks.forEach(function (check) {
+                check.checked = recebidos.includes(check.value);
+            });
+
+            // "Você": 1 se recebeu o sacramento, 0 se não recebeu
+            const voce = labels.map(function (nome) {
+                return recebidos.includes(nome) ? 1 : 0;
+            });
+
+            // "Comunidade": percentual (0 a 100) de cada sacramento, na ordem dos labels
+            const percentuais = labels.map(function (nome) {
+                const linha = comunidade.find(function (item) { return item.nome === nome; });
+                return linha ? Number(linha.percentual) : 0;
+            });
+
+            radar.data.datasets[0].data = voce;
+            radar.data.datasets[1].data = percentuais.map(function (p) { return p / 100; }); // 0 a 1
+            radar.update();   // manda o Chart.js redesenhar com os dados novos
+        });
+    }
+
+    // 4) SALVAR: manda para o banco e, SÓ DEPOIS do servidor confirmar, busca tudo de novo.
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();   // impede a página de recarregar
+
+        // lista dos nomes marcados, ex.: ['Batismo', 'Crisma']
+        const marcados = [...checks]
+            .filter(function (c) { return c.checked; })
+            .map(function (c) { return c.value; });
+
+        feedback.textContent = 'Salvando...';
+
+        fetch('/sacramentos/salvar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                idUsuarioServer: Number(idUsuario),
+                sacramentosServer: marcados
+            })
+        })
+            .then(function (resposta) {
+                if (!resposta.ok) {
+                    throw new Error('Erro ao salvar: ' + resposta.status);
+                }
+                return carregarDados();   // o gráfico é redesenhado com o que ficou no BANCO
+            })
+            .then(function () {
+                feedback.textContent = 'Salvo!';
+            })
+            .catch(function (erro) {
+                console.error(erro);
+                feedback.textContent = 'Não foi possível salvar. Tente de novo.';
+            });
+    });
+
+    // 5) Ao abrir a página, já carrega os dados.
+    carregarDados().catch(function (erro) {
+        console.error(erro);
+        feedback.textContent = 'Não foi possível carregar seus dados.';
+    });
 </script>
