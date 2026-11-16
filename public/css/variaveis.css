@@ -10,4 +10,6 @@
   --texto: #182236;
   --borda: rgba(23, 45, 80, 0.14);
   --sombra: 0 22px 60px rgba(23, 45, 80, 0.12);
+  --dashboard-mark: "IHS";
+  --dashboard-glow: rgba(41, 74, 115, 0.12);
 }

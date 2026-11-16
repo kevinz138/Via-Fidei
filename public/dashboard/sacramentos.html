@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="shortcut icon" href="../imgs/logo-cruz.svg" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,7 +14,7 @@
     <div class="container">
         <nav class="navbar">
             <div class="logo-container">
-                <a href="index.html" class="logo-link">
+                <a href="../HTML/index.html" class="logo-link">
                     <img src="../imgs/logo-cruz.svg" alt="">
                     <div class="titulo">
                         <strong>Via Fidei</strong>
@@ -24,13 +24,13 @@
             </div>
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a class="active" href="index.html">Início</a>
+                    <a class="active" href="../HTML/index.html">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a href="historia.html">Nossa fé</a>
+                    <a href="../HTML/historia.html">Nossa fé</a>
                 </li>
                 <li class="nav-item">
-                    <a href="dedicatoria.html">Dedicatória</a>
+                    <a href="../HTML/dedicatoria.html">Dedicatória</a>
                 </li>
             </ul>
             <div class="buttons">
@@ -79,7 +79,7 @@
   const ctx = document.getElementById('sacrament-radar');
 
   new Chart(ctx, {
-    type: 'bar',
+    type: 'radar',
     data: {
       labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
       datasets: [{
