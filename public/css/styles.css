@@ -20,7 +20,7 @@ p {
 }
 
 section {
-    padding: 110px 0;
+    padding: 90px 0;
 }
 
 a {
@@ -62,10 +62,6 @@ h1 em {
     color: var(--champanhe);
     font-weight: 400;
     font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
-.section {
-    padding: 110px 0;
 }
 
 .eucaristico,
@@ -709,6 +705,11 @@ h1 em {
     box-shadow: 18px 18px 0 var(--champanhe);
 }
 
+.chapter-foto img.foto-larga {
+    width: 500px;
+    height: 400px;
+}
+
 .chapter-number {
     color: var(--dourado);
     font-family: Georgia, serif;
@@ -1158,6 +1159,47 @@ input:focus {
 ------------------------------
 */
 
+/* Parte HEADER */
+
+.data-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 430px;
+    padding: 100px 24px 78px;
+    color: var(--branco);
+    background: radial-gradient(circle at 82% 10%, rgba(130, 151, 176, 0.2), transparent 25%), var(--azul-marinho);
+    text-align: center;
+}
+
+.data-hero>p:not(.eyebrow-light) {
+    max-width: 650px;
+    margin: 0 auto 32px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 16px;
+}
+
+.data-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.data-nav a {
+  padding: 11px 20px;
+  border: 1px solid var(--azul-claro);
+  border-radius: 999px;
+  color: var(--branco);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.data-nav a:hover, .data-nav a.active {
+  border-color: var(--dourado);
+  color: var(--azul-marinho);
+  background: var(--dourado);
+}
+
 /* Parte Sacramentos*/
 
 .data-main {
@@ -1266,9 +1308,9 @@ input:focus {
 }
 
 .check-list {
-  margin-bottom: 24px;
-  display: grid;
-  gap: 13px;
+    margin-bottom: 24px;
+    display: grid;
+    gap: 13px;
 }
 
 .check-list label {
@@ -1314,14 +1356,37 @@ input:focus {
     height: 410px;
 }
 
-/* Parte Sacramentos */
+.form-feedback {
+    min-height: 17px;
+    margin: 12px 0 0;
+    color: var(--champanhe);
+    font-size: 10px;
+}
 
 .canvas-wrap.radar {
     height: 290px;
-  }
+}
 
-.canvas-wrap.wide { height: 275px; }
-.canvas-wrap.tall { height: 390px; }
-.canvas-wrap.radar { height: 410px; }
-.canvas-wrap.year { height: 120px; }
-.canvas-wrap.medium-wide { height: 275px; }
+.canvas-wrap.wide {
+    height: 275px;
+}
+
+.canvas-wrap.tall {
+    height: 390px;
+}
+
+.canvas-wrap.radar {
+    height: 410px;
+}
+
+.canvas-wrap.year {
+    height: 120px;
+}
+
+.canvas-wrap.medium-wide {
+    height: 275px;
+}
+
+.data-card.full {
+  grid-column: 1 / -1;
+}

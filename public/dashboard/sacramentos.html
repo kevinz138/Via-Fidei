@@ -24,7 +24,7 @@
             </div>
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a class="active" href="../HTML/index.html">Início</a>
+                    <a href="../HTML/index.html">Início</a>
                 </li>
                 <li class="nav-item">
                     <a href="../HTML/historia.html">Nossa fé</a>
@@ -46,6 +46,16 @@
 </header>
 
 <body>
+    <header class="data-hero">
+        <img src="../imgs/sagrado-coracao.svg" alt="" class="sacred-heart right">
+        <p class="eyebrow-light">Meu caminho dos sacramentos</p>
+        <h1>Onde estou no meu <em>caminho?</em></h1>
+        <p>Marque os sacramentos que já recebeu e compare com a caminhada da comunidade.</p>
+        <nav class="data-nav">
+            <a href="sacramentos.html" class="active">Meu caminho</a>
+            <a href="oracao.html">Corrente de oração</a>
+        </nav>
+    </header>
     <main class="data-main">
         <div class="sacrament-layout">
             <form class="input-card" id="sacrament-form">
@@ -70,35 +80,67 @@
                     <canvas id="sacrament-radar"></canvas>
                 </div>
             </section>
+            <section class="data-card full">
+                <span class="card-number">03</span>
+                <h2>Quantos já receberam cada sacramento?</h2>
+                <div class="canvas-wrap tall"><canvas id="sacrament-bars"></canvas></div>
+            </section>
         </div>
     </main>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="rodape-container">
+                <a href="index.html" class="brand brand-footer">
+                    <img src="../imgs/logo-cruz.svg" alt="">
+                    <div class="rodape">
+                        <strong>Via Fidei</strong>
+                        <small>Caminho da fé</small>
+                    </div>
+                </a>
+                <p>
+                    Um espaço de encontro, formação e testemunho da fé católica.
+                </p>
+            </div>
+            <div class="explore">
+                <strong>Explore</strong>
+                <a href="index.html">Início</a>
+                <a href="historia.html">Nossa fé</a>
+                <a href="dedicatoria.html">Dedicatória</a>
+            </div>
+            <div class="account">
+                <strong>Sua conta</strong>
+                <a href="login.html">Entrar</a>
+                <a href="cadastro.html">Criar conta</a>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <span>Via Fidei · Feito com propósito</span>
+            <span>Ad maiorem Dei gloriam</span>
+        </div>
+    </footer>
 </body>
 
 </html>
 
 <script>
-    // Ordem em que os sacramentos aparecem no radar (cada um é uma "ponta")
     const labels = ['Batismo', 'Crisma', 'Eucaristia', 'Reconciliação', 'Unção', 'Ordem', 'Matrimônio'];
     const zeros = labels.map(() => 0);
 
-    // 1) QUEM É A PESSOA? O login guardou o id dela na sessão do navegador.
-    //    Se não tem id, ela não fez login: manda de volta para o login.
-    const idUsuario = sessionStorage.ID_USUARIO;
-    if (idUsuario == null) {
-        window.location = '/login.html';
-    }
+    // // quem não fez login volta para o login
+    // const idUsuario = sessionStorage.ID_USUARIO;
+    // if (idUsuario == null) {
+    //     window.location = '/login.html';
+    // }
 
-    // Elementos da tela que vamos usar
     const form = document.getElementById('sacrament-form');
     const checks = document.querySelectorAll('.check-list input');
     const feedback = document.getElementById('sacrament-feedback');
 
-    // Aparência padrão dos gráficos (cor e fonte do texto)
     Chart.defaults.color = '#596579';
     Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
     Chart.defaults.font.size = 12;
 
-    // 2) O GRÁFICO nasce zerado. Os números reais chegam do banco em carregarDados().
+    // os gráficos nascem zerados; os dados chegam do banco em carregarDados()
     const radar = new Chart(document.getElementById('sacrament-radar'), {
         type: 'radar',
         data: {
@@ -125,17 +167,45 @@
             },
             scales: {
                 r: {
-                    min: 0, max: 1,               // o radar vai de 0 (nada) a 1 (100%)
+                    min: 0, max: 1,
                     ticks: { display: false, stepSize: 0.5 },
                     grid: { color: '#e6d5ae' },
                     angleLines: { color: '#e6d5ae' },
-                    pointLabels: { color: '#172d50', font: { size: 10 } }
+                    pointLabels: { color: '#172d50', font: { size: 15 } }
                 }
             }
         }
     });
 
-    // Função auxiliar: faz um GET e devolve o JSON (ou dá erro se o servidor recusar)
+    const barras = new Chart(document.getElementById('sacrament-bars'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                data: zeros,
+                backgroundColor: ['#c7a45b', '#294a73', '#294a73', '#294a73', '#294a73', '#294a73', '#294a73'],
+                borderRadius: 6,
+                barThickness: 22
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { backgroundColor: '#172d50', padding: 10, displayColors: false }
+            },
+            scales: {
+                x: { display: false, min: 0, max: 100, grid: { display: false }, border: { display: false } },
+                y: {
+                    grid: { display: false }, border: { display: false },
+                    ticks: { color: '#172d50', font: { family: 'Georgia, serif', size: 14 } }
+                }
+            }
+        }
+    });
+
     function buscarJson(url) {
         return fetch(url).then(function (resposta) {
             if (!resposta.ok) {
@@ -145,42 +215,44 @@
         });
     }
 
-    // 3) BUSCAR NO BANCO e redesenhar. É chamada ao abrir a página e depois de salvar.
+    // BUSCA NO BANCO e redesenha tudo
     function carregarDados() {
         return Promise.all([
-            buscarJson('/sacramentos/usuario/' + idUsuario),   // o que ESTA pessoa marcou
-            buscarJson('/sacramentos/comunidade')              // % de todo mundo
+            buscarJson('/sacramentos/usuario/' + idUsuario),
+            buscarJson('/sacramentos/comunidade')
         ]).then(function (respostas) {
             const recebidos = respostas[0].map(function (linha) { return linha.nome; });
             const comunidade = respostas[1];
 
-            // deixa os checkboxes iguais ao que está no banco
+            // marca os checkboxes de acordo com o banco
             checks.forEach(function (check) {
                 check.checked = recebidos.includes(check.value);
             });
 
-            // "Você": 1 se recebeu o sacramento, 0 se não recebeu
+            // radar: "Você" é 1 (recebeu) ou 0 (não recebeu)
             const voce = labels.map(function (nome) {
                 return recebidos.includes(nome) ? 1 : 0;
             });
 
-            // "Comunidade": percentual (0 a 100) de cada sacramento, na ordem dos labels
+            // percentual (0 a 100) de cada sacramento, na ordem dos labels
             const percentuais = labels.map(function (nome) {
                 const linha = comunidade.find(function (item) { return item.nome === nome; });
                 return linha ? Number(linha.percentual) : 0;
             });
 
             radar.data.datasets[0].data = voce;
-            radar.data.datasets[1].data = percentuais.map(function (p) { return p / 100; }); // 0 a 1
-            radar.update();   // manda o Chart.js redesenhar com os dados novos
+            radar.data.datasets[1].data = percentuais.map(function (p) { return p / 100; });
+            radar.update();
+
+            barras.data.datasets[0].data = percentuais;
+            barras.update();
         });
     }
 
-    // 4) SALVAR: manda para o banco e, SÓ DEPOIS do servidor confirmar, busca tudo de novo.
+    // SALVAR: envia para o banco e, só depois do OK, busca de novo
     form.addEventListener('submit', function (event) {
-        event.preventDefault();   // impede a página de recarregar
+        event.preventDefault();
 
-        // lista dos nomes marcados, ex.: ['Batismo', 'Crisma']
         const marcados = [...checks]
             .filter(function (c) { return c.checked; })
             .map(function (c) { return c.value; });
@@ -199,7 +271,7 @@
                 if (!resposta.ok) {
                     throw new Error('Erro ao salvar: ' + resposta.status);
                 }
-                return carregarDados();   // o gráfico é redesenhado com o que ficou no BANCO
+                return carregarDados();
             })
             .then(function () {
                 feedback.textContent = 'Salvo!';
@@ -210,7 +282,7 @@
             });
     });
 
-    // 5) Ao abrir a página, já carrega os dados.
+    // ao abrir a página
     carregarDados().catch(function (erro) {
         console.error(erro);
         feedback.textContent = 'Não foi possível carregar seus dados.';

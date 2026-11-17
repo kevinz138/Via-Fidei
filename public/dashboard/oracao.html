@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="shortcut icon" href="../imgs/logo-cruz.svg" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dedicatória — Via Fidei</title>
+</head>
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="../HTML/index.html" class="logo-link">
+                    <img src="../imgs/logo-cruz.svg" alt="">
+                    <div class="titulo">
+                        <strong>Via Fidei</strong>
+                        <small>Caminho da fé</small>
+                    </div>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="../HTML/index.html">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../HTML/historia.html">Nossa fé</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../HTML/dedicatoria.html">Dedicatória</a>
+                </li>
+            </ul>
+            <div class="buttons">
+                <button class="btn-login">
+                    <a href="login.html">Entrar</a>
+                </button>
+                <button class="btn-default btn-cadastro">
+                    <a href="cadastro.html">Criar conta</a>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<body>
+    <header class="data-hero">
+        <img src="../imgs/sagrado-coracao.svg" alt="" class="sacred-heart right">
+        <p class="eyebrow-light">Meu caminho dos sacramentos</p>
+        <h1>Onde estou no meu <em>caminho?</em></h1>
+        <p>Marque os sacramentos que já recebeu e compare com a caminhada da comunidade.</p>
+        <nav class="data-nav">
+            <a href="sacramentos.html">Meu caminho</a>
+            <a href="oracao.html" class="active">Corrente de oração</a>
+        </nav>
+    </header>
+
+    <main class="data-main">
+        <section class="data-top-grid prayer-top">
+            <form class="input-card" id="prayer-form">
+                <span class="card-number">01</span>
+                <h2>Registrar oração</h2>
+                <label for="prayer-intention">Intenção</label>
+                <select id="prayer-intention" name="intention">
+                    <option>Família</option>
+                    <option>Paz</option>
+                    <option>Gratidão</option>
+                    <option>Saúde</option>
+                    <option>Estudos</option>
+                    <option>Trabalho</option>
+                </select>
+                <label for="prayer-type">Tipo</label>
+                <select id="prayer-type" name="type">
+                    <option>Terço</option>
+                    <option>Missa</option>
+                    <option>Pai-Nosso</option>
+                    <option>Outras</option>
+                </select>
+                <label for="prayer-minutes">Minutos</label>
+                <select id="prayer-minutes" name="minutes">
+                    <option value="5">5 minutos</option>
+                    <option value="10">10 minutos</option>
+                    <option value="15" selected>15 minutos</option>
+                    <option value="20">20 minutos</option>
+                    <option value="30">30 minutos</option>
+                    <option value="60">60 minutos</option>
+                </select>
+            </form>
+
+        </section>
+    </main>
+</body>
+
+</html>
