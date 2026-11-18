@@ -178,10 +178,12 @@ h1 em {
     background: var(--azul-classico);
     transform: translateY(-2px);
     color: var(--branco);
+    cursor: pointer;
 }
 
 .btn-default:hover a {
     color: var(--branco);
+    cursor: pointer;
 }
 
 .btn-default a {
@@ -768,7 +770,7 @@ h1 em {
     color: var(--branco);
     background:
         radial-gradient(circle at 80% 25%, rgba(199, 164, 91, 0.18),
-            transparent 25%),
+        transparent 25%),
         var(--azul-marinho);
 }
 
@@ -879,7 +881,15 @@ h1 em {
 }
 
 .dedication-foto {
-    min-height: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dedication-foto img {
+    width: 280px;
+    height: 300px;
+    border-radius: 0px 90px 0px 0px;
 }
 
 .portrait-grid {
@@ -1158,6 +1168,11 @@ input:focus {
          DASHBOARDS
 ------------------------------
 */
+
+#nome-usuario {
+    color: var(--branco);
+    font-weight: 700;
+}
 
 /* Parte HEADER */
 

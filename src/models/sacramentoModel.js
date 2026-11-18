@@ -15,7 +15,8 @@ function buscarDoUsuario(idUsuario) {
 function buscarComunidade() {
     var instrucaoSql = `
         SELECT s.nome,
-               COUNT(us.fkUsuario) * 100 / GREATEST((SELECT COUNT(*) FROM usuario), 1) AS percentual
+            COUNT(us.fkUsuario) AS total,
+            COUNT(us.fkUsuario) * 100 / GREATEST((SELECT COUNT(*) FROM usuario), 1) AS percentual
         FROM sacramento s
         LEFT JOIN usuarioSacramento us ON us.fkSacramento = s.idSacramento
         GROUP BY s.idSacramento, s.nome

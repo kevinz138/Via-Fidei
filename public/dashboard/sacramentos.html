@@ -34,12 +34,7 @@
                 </li>
             </ul>
             <div class="buttons">
-                <button class="btn-login">
-                    <a href="login.html">Entrar</a>
-                </button>
-                <button class="btn-default btn-cadastro">
-                    <a href="cadastro.html">Criar conta</a>
-                </button>
+                <span id="nome-usuario"></span>
             </div>
         </nav>
     </div>
@@ -75,7 +70,7 @@
             </form>
             <section class="data-card">
                 <span class="card-number">02</span>
-                <h2>Seu caminho</h2>
+                <h2>Sua jornada de fé</h2>
                 <div class="canvas-wrap radar">
                     <canvas id="sacrament-radar"></canvas>
                 </div>
@@ -123,14 +118,15 @@
 </html>
 
 <script>
+    document.getElementById('nome-usuario').textContent = sessionStorage.NOME_USUARIO;
     const labels = ['Batismo', 'Crisma', 'Eucaristia', 'Reconciliação', 'Unção', 'Ordem', 'Matrimônio'];
     const zeros = labels.map(() => 0);
 
-    // // quem não fez login volta para o login
-    // const idUsuario = sessionStorage.ID_USUARIO;
-    // if (idUsuario == null) {
-    //     window.location = '/login.html';
-    // }
+    // quem não fez login volta para o login
+    const idUsuario = sessionStorage.ID_USUARIO;
+    if (idUsuario == null) {
+        window.location = '/login.html';
+    }
 
     const form = document.getElementById('sacrament-form');
     const checks = document.querySelectorAll('.check-list input');
@@ -194,10 +190,17 @@
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
-                tooltip: { backgroundColor: '#172d50', padding: 10, displayColors: false }
+                tooltip: {
+                    backgroundColor: '#172d50', padding: 10, displayColors: false,
+                    callbacks: {
+                        label: function (ctx) {
+                            return ctx.parsed.x + (ctx.parsed.x === 1 ? ' pessoa' : ' pessoas');
+                        }
+                    }
+                }
             },
             scales: {
-                x: { display: false, min: 0, max: 100, grid: { display: false }, border: { display: false } },
+                x: { display: false, min: 0, grid: { display: false }, border: { display: false } },
                 y: {
                     grid: { display: false }, border: { display: false },
                     ticks: { color: '#172d50', font: { family: 'Georgia, serif', size: 14 } }
@@ -240,11 +243,18 @@
                 return linha ? Number(linha.percentual) : 0;
             });
 
+            // QUANTIDADE de pessoas de cada sacramento, na ordem dos labels (vem do banco)
+            const totais = labels.map(function (nome) {
+                const linha = comunidade.find(function (item) { return item.nome === nome; });
+                return linha ? Number(linha.total) : 0;
+            });
+
             radar.data.datasets[0].data = voce;
             radar.data.datasets[1].data = percentuais.map(function (p) { return p / 100; });
             radar.update();
 
-            barras.data.datasets[0].data = percentuais;
+            barras.options.scales.x.max = Math.max(...totais, 1) * 1.2;
+            barras.data.datasets[0].data = totais;
             barras.update();
         });
     }
