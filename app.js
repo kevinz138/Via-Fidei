@@ -18,6 +18,7 @@ var app = express();
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var sacramentosRouter = require("./src/routes/sacramentos");
+var oracoesRouter = require("./src/routes/oracoes")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,6 +30,7 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/sacramentos", sacramentosRouter);
+app.use("/oracoes", oracoesRouter)
 
 app.listen(PORTA_APP, function () {
     console.log(`

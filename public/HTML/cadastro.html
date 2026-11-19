@@ -57,7 +57,13 @@
                     </div>
                     <div class="form-group">
                         <label for="senha">Crie uma senha</label>
-                        <input id="senha" name="senha" type="password" placeholder="Mínimo de 8 caracteres" required>
+                        <input id="senha" name="senha" type="password" placeholder="Sua senha" required>
+                        <ul class="senha-regras">
+                            <li>Mínimo de 8 caracteres</li>
+                            <li>Uma letra maiúscula e uma minúscula</li>
+                            <li>Um número</li>
+                            <li>Um caractere especial: ! @ # $ % & * ?</li>
+                        </ul>
                     </div>
                     <button class="btn-default btn-entrar" onclick="cadastrar()" type="button">
                         Começar minha caminhada

@@ -19,3 +19,68 @@ function registrar(idUsuario, idIntencao, idTipo, minutos) {
     `;
     return database.executar(instrucaoSql, [idUsuario, idIntencao, idTipo, minutos]);
 }
+
+// Minutos que o usuário rezou na semana atual
+function pessoasHoje() {
+    var instrucaoSql = `
+        SELECT COUNT(DISTINCT fkUsuario) AS total
+        FROM oracao
+        WHERE Date(dataHora) = CURDATE();
+    `;
+    return database.executar(instrucaoSql);    
+}
+
+function rankingIntencoes() {
+    var instrucaoSql = `
+        SELECT i.nome, COUNT(o.idOracao) AS total
+        FROM intencao i
+        LEFT JOIN oracao o ON o.fkIntencao = i.idIntencao
+        GROUP BY i.idIntencao, i.nome
+        ORDER BY total DESC, i.nome
+        LIMITE 5
+    `;
+    return database.executar(instrucaoSql);
+}
+
+// como a comunidade reza (rosca)
+function totalPorTipo() {
+    var instrucaoSql = `
+        SELECT t.nome, COUNT(o.idOracao) AS total
+        FROM tipoOracao t
+        LEFT JOIN oracao o ON o.fkTipoOracao = t.idTipoOracao
+        GROUP BY t.idTipoOracao, t.nome
+        ORDER BY t.idTipoOracao;
+    `;
+    return database.executar(instrucaoSql);
+}
+
+// semana (linha)
+function semanaDoUsuario(idUsuario) {
+    var instrucaoSql = `
+        SELECT WEEKDAY(dataHora) AS dia, SUM(minutos) AS minutos
+        FROM oracao
+        WHERE fkUsuario = ?
+          AND YEARWEEK(dataHora, 1) = YEARWEEK(CURDATE(), 1)
+        GROUP BY WEEKDAY(dataHora);
+    `;
+    return database.executar(instrucaoSql, [idUsuario]);
+}
+
+// Média da comunidade que rezou no dia
+function semanaDaComunidade() {
+    var instrucaoSql = `
+        SELECT WEEKDAY(dataHora) AS dia,
+               SUM(minutos) / COUNT(DISTINCT fkUsuario) AS minutos
+        FROM oracao
+        WHERE YEARWEEK(dataHora, 1) = YEARWEEK(CURDATE(), 1)
+        GROUP BY WEEKDAY(dataHora);
+    `;
+    return database.executar(instrucaoSql);
+}
+
+module.exports = {
+    listarIntencoes, listarTipos, registrar,
+    pessoasHoje, minutosDaSemana,
+    rankingIntencoes, totalPorTipo,
+    semanaDoUsuario, semanaDaComunidade
+};
