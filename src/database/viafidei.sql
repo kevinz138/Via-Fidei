@@ -16,10 +16,16 @@ CREATE TABLE intencao (
     nome VARCHAR(40) NOT NULL UNIQUE
 );
 
+INSERT INTO intencao (nome) VALUES
+('Família'), ('Paz'), ('Gratidão'), ('Saúde'), ('Estudos'), ('Trabalho');
+
 CREATE TABLE tipoOracao (
     idTipoOracao TINYINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(40) NOT NULL UNIQUE
 );
+
+INSERT INTO tipoOracao (nome) VALUES
+('Terço'), ('Missa'), ('Pai-Nosso'), ('Outras');
 
 CREATE TABLE sacramento (
     idSacramento TINYINT PRIMARY KEY AUTO_INCREMENT,
@@ -29,22 +35,6 @@ CREATE TABLE sacramento (
 INSERT INTO sacramento (nome) VALUES
 ('Batismo'), ('Eucaristia'), ('Reconciliação'), ('Crisma'),
 ('Matrimônio'), ('Ordem'), ('Unção');
-
-CREATE TABLE tempoLiturgico (
-    idTempoLiturgico TINYINT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(20) NOT NULL,
-    cor VARCHAR(10) NOT NULL
-);
-
-CREATE TABLE anoLiturgico (
-    anoInicio SMALLINT PRIMARY KEY, -- Ex: 2026 = ano que começa no Advento de 2026
-    inicioAdvento DATE,
-    natal DATE,
-    batismoSenhor DATE,
-    quartaCinzas DATE,
-    pascoa DATE,
-    pentecostes DATE
-);
 
 -- 3. Tabela Associativa N:N (Usuario <-> Sacramento)
 CREATE TABLE usuarioSacramento (
@@ -68,28 +58,11 @@ CREATE TABLE oracao (
     CONSTRAINT fkOracaoTipo FOREIGN KEY (fkTipoOracao) REFERENCES tipoOracao(idTipoOracao)
 );
 
-CREATE TABLE consultaCalendario (
-    idConsulta INT PRIMARY KEY AUTO_INCREMENT,
-    fkUsuario INT NOT NULL,
-    dataConsultada DATE NOT NULL,
-    fkTempoLiturgico TINYINT NOT NULL,
-    dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fkConsultaUsuario FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario),
-    CONSTRAINT fkConsultaTempo FOREIGN KEY (fkTempoLiturgico) REFERENCES tempoLiturgico(idTempoLiturgico)
-);
-
-CREATE TABLE quaresmaPratica (
-    idQuaresmaPratica INT PRIMARY KEY AUTO_INCREMENT,
-    fkUsuario INT NOT NULL,
-    dataPratica DATE NOT NULL,
-    pratica ENUM('oracao', 'jejum', 'esmola') NOT NULL,
-    UNIQUE (fkUsuario, dataPratica, pratica), -- impede marcar duas vezes o mesmo dia
-    CONSTRAINT fkQuaresmaUsuario FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario)
-);
-
 SELECT u.nome,
 	s.nome FROM usuario u
     JOIN usuarioSacramento us
 		ON us.fkUsuario = idUsuario
 	JOIN sacramento s
 		ON us.fkSacramento = idSacramento;
+        
+SELECT * FROM usuario;
