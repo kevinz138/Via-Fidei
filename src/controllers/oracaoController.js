@@ -1,17 +1,19 @@
 var oracaoModel = require("../models/oracaoModel");
 
-// Função para evitar repetir o mesmo .catch em todo lugar
+// função auxiliar: evita repetir o mesmo .catch em todo lugar
 function erro500(res, erro) {
     console.log(erro);
     res.status(500).json(erro.sqlMessage || String(erro));
 }
 
+// GET /oracoes/opcoes  ->  { intencoes: [...], tipos: [...] }
 function opcoes(req, res) {
     Promise.all([oracaoModel.listarIntencoes(), oracaoModel.listarTipos()])
-        .then(function (r) { req.json({ intencoes: r[0], tipos: r[1] }); })
+        .then(function (r) { res.json({ intencoes: r[0], tipos: r[1] }); })
         .catch(function (erro) { erro500(res, erro); });
 }
 
+// POST /oracoes/registrar
 function registrar(req, res) {
     var idUsuario = req.body.idUsuarioServer;
     var idIntencao = req.body.intencaoServer;
@@ -28,6 +30,7 @@ function registrar(req, res) {
         .catch(function (erro) { erro500(res, erro); });
 }
 
+// GET /oracoes/resumo/:idUsuario  ->  { pessoasHoje: 128, minutosSemana: 95 }
 function resumo(req, res) {
     var idUsuario = req.params.idUsuario;
     Promise.all([oracaoModel.pessoasHoje(), oracaoModel.minutosDaSemana(idUsuario)])
@@ -37,18 +40,21 @@ function resumo(req, res) {
         .catch(function (erro) { erro500(res, erro); });
 }
 
+// GET /oracoes/intencoes  ->  [ { nome, total }, ... ]
 function intencoes(req, res) {
     oracaoModel.rankingIntencoes()
         .then(function (r) { res.json(r); })
         .catch(function (erro) { erro500(res, erro); });
 }
 
+// GET /oracoes/tipos  ->  [ { nome, total }, ... ]
 function tipos(req, res) {
     oracaoModel.totalPorTipo()
         .then(function (r) { res.json(r); })
         .catch(function (erro) { erro500(res, erro); });
 }
 
+// GET /oracoes/semana/:idUsuario  ->  { voce: [{dia, minutos}], comunidade: [{dia, minutos}] }
 function semana(req, res) {
     var idUsuario = req.params.idUsuario;
     Promise.all([oracaoModel.semanaDoUsuario(idUsuario), oracaoModel.semanaDaComunidade()])

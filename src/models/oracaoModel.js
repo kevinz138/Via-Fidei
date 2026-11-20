@@ -1,6 +1,5 @@
 var database = require("../database/config");
 
-// ---------- listas para os <select> ----------
 function listarIntencoes() {
     var instrucaoSql = `SELECT idIntencao AS id, nome FROM intencao ORDER BY idIntencao;`;
     return database.executar(instrucaoSql);
@@ -11,7 +10,6 @@ function listarTipos() {
     return database.executar(instrucaoSql);
 }
 
-// ---------- gravar ----------
 function registrar(idUsuario, idIntencao, idTipo, minutos) {
     var instrucaoSql = `
         INSERT INTO oracao (fkUsuario, fkIntencao, fkTipoOracao, minutos)
@@ -20,16 +18,29 @@ function registrar(idUsuario, idIntencao, idTipo, minutos) {
     return database.executar(instrucaoSql, [idUsuario, idIntencao, idTipo, minutos]);
 }
 
-// Minutos que o usuário rezou na semana atual
+// cards 02 e 03
+// Quantas pessoas diferentes rezaram HOJE
 function pessoasHoje() {
     var instrucaoSql = `
         SELECT COUNT(DISTINCT fkUsuario) AS total
         FROM oracao
-        WHERE Date(dataHora) = CURDATE();
+        WHERE DATE(dataHora) = CURDATE();
     `;
-    return database.executar(instrucaoSql);    
+    return database.executar(instrucaoSql);
 }
 
+// Minutos que ESTE usuário rezou na semana atual
+function minutosDaSemana(idUsuario) {
+    var instrucaoSql = `
+        SELECT COALESCE(SUM(minutos), 0) AS total
+        FROM oracao
+        WHERE fkUsuario = ?
+          AND YEARWEEK(dataHora, 1) = YEARWEEK(CURDATE(), 1);
+    `;
+    return database.executar(instrucaoSql, [idUsuario]);
+}
+
+// gráfico 04: o que a comunidade mais reza (top 5)
 function rankingIntencoes() {
     var instrucaoSql = `
         SELECT i.nome, COUNT(o.idOracao) AS total
@@ -37,12 +48,12 @@ function rankingIntencoes() {
         LEFT JOIN oracao o ON o.fkIntencao = i.idIntencao
         GROUP BY i.idIntencao, i.nome
         ORDER BY total DESC, i.nome
-        LIMITE 5
+        LIMIT 5;
     `;
     return database.executar(instrucaoSql);
 }
 
-// como a comunidade reza (rosca)
+// gráfico 05: como a comunidade reza (rosca)
 function totalPorTipo() {
     var instrucaoSql = `
         SELECT t.nome, COUNT(o.idOracao) AS total
@@ -54,7 +65,8 @@ function totalPorTipo() {
     return database.executar(instrucaoSql);
 }
 
-// semana (linha)
+// gráfico 06: semana (linha)
+// WEEKDAY(): 0 = segunda ... 6 = domingo
 function semanaDoUsuario(idUsuario) {
     var instrucaoSql = `
         SELECT WEEKDAY(dataHora) AS dia, SUM(minutos) AS minutos
@@ -66,7 +78,7 @@ function semanaDoUsuario(idUsuario) {
     return database.executar(instrucaoSql, [idUsuario]);
 }
 
-// Média da comunidade que rezou no dia
+// Média da comunidade: minutos por pessoa que rezou naquele dia
 function semanaDaComunidade() {
     var instrucaoSql = `
         SELECT WEEKDAY(dataHora) AS dia,

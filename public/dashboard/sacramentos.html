@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/header.css">
     <link rel="shortcut icon" href="../imgs/logo-cruz.svg" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Dedicatória — Via Fidei</title>
+    <title>Meu caminho — Via Fidei</title>
 </head>
 <header>
     <div class="container">
@@ -57,15 +57,15 @@
                 <span class="card-number">01</span>
                 <h2>Marque o que já recebeu</h2>
                 <div class="check-list">
-                    <label><input type="checkbox" value="Batismo">Batismo</label>
-                    <label><input type="checkbox" value="Crisma">Crisma</label>
-                    <label><input type="checkbox" value="Eucaristia">Eucaristia</label>
-                    <label><input type="checkbox" value="Reconciliação">Reconciliação</label>
-                    <label><input type="checkbox" value="Unção">Unção</label>
-                    <label><input type="checkbox" value="Ordem">Ordem</label>
-                    <label><input type="checkbox" value="Matrimônio">Matrimônio</label>
+                    <label><input type="checkbox" name="sacramento" value="Batismo">Batismo</label>
+                    <label><input type="checkbox" name="sacramento" value="Crisma">Crisma</label>
+                    <label><input type="checkbox" name="sacramento" value="Eucaristia">Eucaristia</label>
+                    <label><input type="checkbox" name="sacramento" value="Reconciliação">Reconciliação</label>
+                    <label><input type="checkbox" name="sacramento" value="Unção">Unção</label>
+                    <label><input type="checkbox" name="sacramento" value="Ordem">Ordem</label>
+                    <label><input type="checkbox" name="sacramento" value="Matrimônio">Matrimônio</label>
                 </div>
-                <button type="submit">Salvar</button>
+                <button type="button" onclick="salvar()">Salvar</button>
                 <p class="form-feedback" id="sacrament-feedback"></p>
             </form>
             <section class="data-card">
@@ -80,12 +80,18 @@
                 <h2>Quantos já receberam cada sacramento?</h2>
                 <div class="canvas-wrap tall"><canvas id="sacrament-bars"></canvas></div>
             </section>
+            <section class="data-card full">
+                <span class="card-number">04</span>
+                <h2>Em números: quantas pessoas têm cada sacramento</h2>
+                <ul class="lista-numeros" id="sacrament-numbers"></ul>
+                <p class="lista-resumo" id="sacrament-summary"></p>
+            </section>
         </div>
     </main>
     <footer class="site-footer">
         <div class="container footer-grid">
             <div class="rodape-container">
-                <a href="index.html" class="brand brand-footer">
+                <a href="../HTML/index.html" class="brand brand-footer">
                     <img src="../imgs/logo-cruz.svg" alt="">
                     <div class="rodape">
                         <strong>Via Fidei</strong>
@@ -98,14 +104,14 @@
             </div>
             <div class="explore">
                 <strong>Explore</strong>
-                <a href="index.html">Início</a>
-                <a href="historia.html">Nossa fé</a>
-                <a href="dedicatoria.html">Dedicatória</a>
+                <a href="../HTML/index.html">Início</a>
+                <a href="../HTML/historia.html">Nossa fé</a>
+                <a href="../HTML/dedicatoria.html">Dedicatória</a>
             </div>
             <div class="account">
                 <strong>Sua conta</strong>
-                <a href="login.html">Entrar</a>
-                <a href="cadastro.html">Criar conta</a>
+                <a href="sacramentos.html">Meu caminho</a>
+                <a href="oracao.html">Corrente de oração</a>
             </div>
         </div>
         <div class="container footer-bottom">
@@ -118,29 +124,27 @@
 </html>
 
 <script>
-    document.getElementById('nome-usuario').textContent = sessionStorage.NOME_USUARIO;
-    const labels = ['Batismo', 'Crisma', 'Eucaristia', 'Reconciliação', 'Unção', 'Ordem', 'Matrimônio'];
-    const zeros = labels.map(() => 0);
+    document.getElementById('nome-usuario').innerHTML = sessionStorage.NOME_USUARIO;
 
-    // quem não fez login volta para o login
-    const idUsuario = sessionStorage.ID_USUARIO;
+    var idUsuario = sessionStorage.ID_USUARIO;
     if (idUsuario == null) {
         window.location = '/login.html';
     }
 
-    const form = document.getElementById('sacrament-form');
-    const checks = document.querySelectorAll('.check-list input');
-    const feedback = document.getElementById('sacrament-feedback');
+    // a ordem daqui é a mesma dos checkboxes e do gráfico
+    var nomes = ['Batismo', 'Crisma', 'Eucaristia', 'Reconciliação', 'Unção', 'Ordem', 'Matrimônio'];
+    var zeros = [0, 0, 0, 0, 0, 0, 0];
 
+    // aparência padrão do Chart.js
     Chart.defaults.color = '#596579';
     Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
     Chart.defaults.font.size = 12;
 
-    // os gráficos nascem zerados; os dados chegam do banco em carregarDados()
-    const radar = new Chart(document.getElementById('sacrament-radar'), {
+    var ctxRadar = document.getElementById('sacrament-radar').getContext('2d');
+    var radar = new Chart(ctxRadar, {
         type: 'radar',
         data: {
-            labels,
+            labels: nomes,
             datasets: [
                 {
                     label: 'Você', data: zeros,
@@ -173,10 +177,11 @@
         }
     });
 
-    const barras = new Chart(document.getElementById('sacrament-bars'), {
+    var ctxBarras = document.getElementById('sacrament-bars').getContext('2d');
+    var barras = new Chart(ctxBarras, {
         type: 'bar',
         data: {
-            labels,
+            labels: nomes,
             datasets: [{
                 data: zeros,
                 backgroundColor: ['#c7a45b', '#294a73', '#294a73', '#294a73', '#294a73', '#294a73', '#294a73'],
@@ -193,8 +198,8 @@
                 tooltip: {
                     backgroundColor: '#172d50', padding: 10, displayColors: false,
                     callbacks: {
-                        label: function (ctx) {
-                            return ctx.parsed.x + (ctx.parsed.x === 1 ? ' pessoa' : ' pessoas');
+                        label: function (item) {
+                            return item.parsed.x + ' pessoa(s)';
                         }
                     }
                 }
@@ -209,65 +214,125 @@
         }
     });
 
-    function buscarJson(url) {
-        return fetch(url).then(function (resposta) {
-            if (!resposta.ok) {
-                throw new Error('Erro ' + resposta.status + ' em ' + url);
-            }
-            return resposta.json();
-        });
-    }
-
-    // BUSCA NO BANCO e redesenha tudo
     function carregarDados() {
-        return Promise.all([
-            buscarJson('/sacramentos/usuario/' + idUsuario),
-            buscarJson('/sacramentos/comunidade')
-        ]).then(function (respostas) {
-            const recebidos = respostas[0].map(function (linha) { return linha.nome; });
-            const comunidade = respostas[1];
-
-            // marca os checkboxes de acordo com o banco
-            checks.forEach(function (check) {
-                check.checked = recebidos.includes(check.value);
+        // pedido 1: os sacramentos desta pessoa
+        fetch('/sacramentos/usuario/' + idUsuario)
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (meusSacramentos) {
+                mostrarMeus(meusSacramentos);
+            })
+            .catch(function (erro) {
+                console.log(erro);
             });
 
-            // radar: "Você" é 1 (recebeu) ou 0 (não recebeu)
-            const voce = labels.map(function (nome) {
-                return recebidos.includes(nome) ? 1 : 0;
+        // pedido 2: os números da comunidade
+        fetch('/sacramentos/comunidade')
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (comunidade) {
+                mostrarComunidade(comunidade);
+            })
+            .catch(function (erro) {
+                console.log(erro);
             });
-
-            // percentual (0 a 100) de cada sacramento, na ordem dos labels
-            const percentuais = labels.map(function (nome) {
-                const linha = comunidade.find(function (item) { return item.nome === nome; });
-                return linha ? Number(linha.percentual) : 0;
-            });
-
-            // QUANTIDADE de pessoas de cada sacramento, na ordem dos labels (vem do banco)
-            const totais = labels.map(function (nome) {
-                const linha = comunidade.find(function (item) { return item.nome === nome; });
-                return linha ? Number(linha.total) : 0;
-            });
-
-            radar.data.datasets[0].data = voce;
-            radar.data.datasets[1].data = percentuais.map(function (p) { return p / 100; });
-            radar.update();
-
-            barras.options.scales.x.max = Math.max(...totais, 1) * 1.2;
-            barras.data.datasets[0].data = totais;
-            barras.update();
-        });
     }
 
-    // SALVAR: envia para o banco e, só depois do OK, busca de novo
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
+    function mostrarMeus(meusSacramentos) {
+        var checks = document.getElementsByName('sacramento');
+        var voce = [];
 
-        const marcados = [...checks]
-            .filter(function (c) { return c.checked; })
-            .map(function (c) { return c.value; });
+        for (var i = 0; i < nomes.length; i++) {
+            var recebeu = false;
 
-        feedback.textContent = 'Salvando...';
+            // procura este sacramento na lista que veio do banco
+            for (var j = 0; j < meusSacramentos.length; j++) {
+                if (meusSacramentos[j].nome == nomes[i]) {
+                    recebeu = true;
+                }
+            }
+
+            checks[i].checked = recebeu;
+
+            if (recebeu) {
+                voce.push(1);
+            } else {
+                voce.push(0);
+            }
+        }
+
+        radar.data.datasets[0].data = voce;
+        radar.update();
+    }
+
+    function mostrarComunidade(comunidade) {
+        var totais = [];
+        var percentuais = [];
+        var lista = '';
+        var maior = 0;
+        var nomeMaior = '';
+
+        for (var i = 0; i < nomes.length; i++) {
+            var total = 0;
+            var percentual = 0;
+
+            // procura este sacramento na resposta da API
+            for (var j = 0; j < comunidade.length; j++) {
+                if (comunidade[j].nome == nomes[i]) {
+                    total = Number(comunidade[j].total);
+                    percentual = Number(comunidade[j].percentual);
+                }
+            }
+
+            totais.push(total);
+            percentuais.push(percentual / 100);
+
+            // uma linha da lista "Em números"
+            lista += `<li>
+                <span>${nomes[i]}</span>
+                <strong>${percentual.toFixed(0)}%</strong>
+                <div class="barra-percentual"><span style="width: ${percentual.toFixed(0)}%"></span></div>
+                <small>${total} pessoa(s)</small>
+            </li>`;
+
+            // guarda o sacramento mais recebido
+            if (total > maior) {
+                maior = total;
+                nomeMaior = nomes[i];
+            }
+        }
+
+        // radar e barras
+        radar.data.datasets[1].data = percentuais;
+        radar.update();
+
+        barras.data.datasets[0].data = totais;
+        barras.options.scales.x.max = maior + 1;
+        barras.update();
+
+        // lista e frase
+        document.getElementById('sacrament-numbers').innerHTML = lista;
+
+        if (maior == 0) {
+            document.getElementById('sacrament-summary').innerHTML = 'Ninguém marcou sacramentos ainda.';
+        } else {
+            document.getElementById('sacrament-summary').innerHTML = `O mais recebido é ${nomeMaior}, com ${maior} pessoa(s).`;
+        }
+    }
+
+    function salvar() {
+        var checks = document.getElementsByName('sacramento');
+        var marcados = [];
+
+        for (var i = 0; i < checks.length; i++) {
+            if (checks[i].checked) {
+                marcados.push(checks[i].value);
+            }
+        }
+
+        document.getElementById('sacrament-feedback').innerHTML = 'Salvando...';
 
         fetch('/sacramentos/salvar', {
             method: 'POST',
@@ -278,23 +343,19 @@
             })
         })
             .then(function (resposta) {
-                if (!resposta.ok) {
-                    throw new Error('Erro ao salvar: ' + resposta.status);
+                if (resposta.ok) {
+                    document.getElementById('sacrament-feedback').innerHTML = 'Salvo!';
+                    carregarDados();
+                } else {
+                    document.getElementById('sacrament-feedback').innerHTML = 'Não foi possível salvar. Tente de novo.';
                 }
-                return carregarDados();
-            })
-            .then(function () {
-                feedback.textContent = 'Salvo!';
             })
             .catch(function (erro) {
-                console.error(erro);
-                feedback.textContent = 'Não foi possível salvar. Tente de novo.';
+                console.log(erro);
+                document.getElementById('sacrament-feedback').innerHTML = 'Não foi possível conectar ao servidor.';
             });
-    });
+    }
 
-    // ao abrir a página
-    carregarDados().catch(function (erro) {
-        console.error(erro);
-        feedback.textContent = 'Não foi possível carregar seus dados.';
-    });
+    carregarDados();
+
 </script>

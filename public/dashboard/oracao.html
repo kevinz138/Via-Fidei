@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/header.css">
     <link rel="shortcut icon" href="../imgs/logo-cruz.svg" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Dedicatória — Via Fidei</title>
+    <title>Corrente de oração — Via Fidei</title>
 </head>
 <header>
     <div class="container">
@@ -34,12 +34,7 @@
                 </li>
             </ul>
             <div class="buttons">
-                <button class="btn-login">
-                    <a href="login.html">Entrar</a>
-                </button>
-                <button class="btn-default btn-cadastro">
-                    <a href="cadastro.html">Criar conta</a>
-                </button>
+                <span id="nome-usuario"></span>
             </div>
         </nav>
     </div>
@@ -48,9 +43,9 @@
 <body>
     <header class="data-hero">
         <img src="../imgs/sagrado-coracao.svg" alt="" class="sacred-heart right">
-        <p class="eyebrow-light">Meu caminho dos sacramentos</p>
-        <h1>Onde estou no meu <em>caminho?</em></h1>
-        <p>Marque os sacramentos que já recebeu e compare com a caminhada da comunidade.</p>
+        <p class="eyebrow-light">Corrente de oração</p>
+        <h1>Quanto a comunidade <em>rezou esta semana?</em></h1>
+        <p>Registre sua oração e veja quantas pessoas rezaram junto com você.</p>
         <nav class="data-nav">
             <a href="sacramentos.html">Meu caminho</a>
             <a href="oracao.html" class="active">Corrente de oração</a>
@@ -58,26 +53,14 @@
     </header>
 
     <main class="data-main">
-        <section class="data-top-grid prayer-top">
-            <form class="input-card" id="prayer-form">
+        <section class="data-top-grid">
+            <form class="input-card prayer-form" id="prayer-form">
                 <span class="card-number">01</span>
                 <h2>Registrar oração</h2>
                 <label for="prayer-intention">Intenção</label>
-                <select id="prayer-intention" name="intention">
-                    <option>Família</option>
-                    <option>Paz</option>
-                    <option>Gratidão</option>
-                    <option>Saúde</option>
-                    <option>Estudos</option>
-                    <option>Trabalho</option>
-                </select>
+                <select id="prayer-intention" name="intention"></select>
                 <label for="prayer-type">Tipo</label>
-                <select id="prayer-type" name="type">
-                    <option>Terço</option>
-                    <option>Missa</option>
-                    <option>Pai-Nosso</option>
-                    <option>Outras</option>
-                </select>
+                <select id="prayer-type" name="type"></select>
                 <label for="prayer-minutes">Minutos</label>
                 <select id="prayer-minutes" name="minutes">
                     <option value="5">5 minutos</option>
@@ -87,10 +70,364 @@
                     <option value="30">30 minutos</option>
                     <option value="60">60 minutos</option>
                 </select>
+                <button type="button" onclick="registrar()">Registrar</button>
+                <p class="form-feedback" id="prayer-feedback"></p>
             </form>
-
+            <article class="stat-card">
+                <span class="card-number">02</span>
+                <p>Pessoas rezando hoje</p>
+                <strong id="people-today">0</strong>
+            </article>
+            <article class="stat-card">
+                <span class="card-number">03</span>
+                <p>Seus minutos na semana</p>
+                <strong id="weekly-minutes">0</strong>
+            </article>
         </section>
+
+        <div class="data-chart-grid">
+            <section class="data-card">
+                <span class="card-number">04</span>
+                <h2>O que a comunidade mais reza?</h2>
+                <div class="canvas-wrap medium"><canvas id="intentions-chart"></canvas></div>
+            </section>
+            <section class="data-card">
+                <span class="card-number">05</span>
+                <h2>Como a comunidade reza?</h2>
+                <div class="canvas-wrap medium"><canvas id="prayer-types-chart"></canvas></div>
+            </section>
+            <section class="data-card full">
+                <span class="card-number">06</span>
+                <h2>Quanto você e a comunidade rezaram esta semana?</h2>
+                <div class="canvas-wrap wide"><canvas id="prayer-week-chart"></canvas></div>
+            </section>
+            <section class="data-card full">
+                <span class="card-number">07</span>
+                <h2>Em números: quanto cada tipo de oração representa</h2>
+                <ul class="lista-numeros" id="prayer-numbers"></ul>
+                <p class="lista-resumo" id="prayer-summary"></p>
+            </section>
+        </div>
     </main>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="rodape-container">
+                <a href="../HTML/index.html" class="brand brand-footer">
+                    <img src="../imgs/logo-cruz.svg" alt="">
+                    <div class="rodape">
+                        <strong>Via Fidei</strong>
+                        <small>Caminho da fé</small>
+                    </div>
+                </a>
+                <p>
+                    Um espaço de encontro, formação e testemunho da fé católica.
+                </p>
+            </div>
+            <div class="explore">
+                <strong>Explore</strong>
+                <a href="../HTML/index.html">Início</a>
+                <a href="../HTML/historia.html">Nossa fé</a>
+                <a href="../HTML/dedicatoria.html">Dedicatória</a>
+            </div>
+            <div class="account">
+                <strong>Sua conta</strong>
+                <a href="sacramentos.html">Meu caminho</a>
+                <a href="oracao.html">Corrente de oração</a>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <span>Via Fidei · Feito com propósito</span>
+            <span>Ad maiorem Dei gloriam</span>
+        </div>
+    </footer>
 </body>
 
 </html>
+
+<script>
+    document.getElementById('nome-usuario').innerHTML = sessionStorage.NOME_USUARIO;
+
+    var idUsuario = sessionStorage.ID_USUARIO;
+    if (idUsuario == null) {
+        window.location = '/login.html';
+    }
+
+    var dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+
+    // aparência padrão do Chart.js
+    Chart.defaults.color = '#596579';
+    Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
+    Chart.defaults.font.size = 12;
+
+    var ctxIntencoes = document.getElementById('intentions-chart').getContext('2d');
+    var graficoIntencoes = new Chart(ctxIntencoes, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{ data: [], backgroundColor: [], borderRadius: 6, barThickness: 18 }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { backgroundColor: '#172d50', padding: 10, displayColors: false }
+            },
+            scales: {
+                x: { display: false, min: 0, grid: { display: false }, border: { display: false } },
+                y: {
+                    grid: { display: false }, border: { display: false },
+                    ticks: { color: '#172d50', font: { family: 'Georgia, serif', size: 13 } }
+                }
+            }
+        }
+    });
+
+    var ctxTipos = document.getElementById('prayer-types-chart').getContext('2d');
+    var graficoTipos = new Chart(ctxTipos, {
+        type: 'doughnut',
+        data: {
+            labels: [],
+            datasets: [{ data: [], backgroundColor: ['#294a73', '#c7a45b', '#8297b0', '#e6d5ae'], borderWidth: 0 }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+                legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 7 } },
+                tooltip: { backgroundColor: '#172d50', padding: 10, displayColors: false }
+            }
+        }
+    });
+
+    var ctxSemana = document.getElementById('prayer-week-chart').getContext('2d');
+    var graficoSemana = new Chart(ctxSemana, {
+        type: 'line',
+        data: {
+            labels: dias,
+            datasets: [
+                { label: 'Você', data: [0, 0, 0, 0, 0, 0, 0], borderColor: '#c7a45b', backgroundColor: '#c7a45b', tension: 0, pointRadius: 0, borderWidth: 2 },
+                { label: 'Comunidade', data: [0, 0, 0, 0, 0, 0, 0], borderColor: '#294a73', backgroundColor: '#294a73', tension: 0, pointRadius: 0, borderWidth: 2 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', align: 'start', labels: { usePointStyle: true, boxWidth: 7 } },
+                tooltip: { backgroundColor: '#172d50', padding: 10, displayColors: false }
+            },
+            scales: {
+                x: { grid: { display: false }, border: { display: false } },
+                y: { display: false, min: 0 }
+            }
+        }
+    });
+
+    function carregarOpcoes() {
+        fetch('/oracoes/opcoes')
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (dados) {
+                var opcoesIntencao = '';
+                for (var i = 0; i < dados.intencoes.length; i++) {
+                    opcoesIntencao += `<option value="${dados.intencoes[i].id}">${dados.intencoes[i].nome}</option>`;
+                }
+                document.getElementById('prayer-intention').innerHTML = opcoesIntencao;
+
+                var opcoesTipo = '';
+                for (var i = 0; i < dados.tipos.length; i++) {
+                    opcoesTipo += `<option value="${dados.tipos[i].id}">${dados.tipos[i].nome}</option>`;
+                }
+                document.getElementById('prayer-type').innerHTML = opcoesTipo;
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            });
+    }
+
+    function carregarDados() {
+        fetch('/oracoes/resumo/' + idUsuario)
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (resumo) {
+                document.getElementById('people-today').innerHTML = resumo.pessoasHoje;
+                document.getElementById('weekly-minutes').innerHTML = resumo.minutosSemana;
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            });
+
+        fetch('/oracoes/intencoes')
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (intencoes) {
+                mostrarIntencoes(intencoes);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            });
+
+        fetch('/oracoes/tipos')
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (tipos) {
+                mostrarTipos(tipos);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            });
+
+        fetch('/oracoes/semana/' + idUsuario)
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (semana) {
+                mostrarSemana(semana);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+            });
+    }
+
+    function mostrarIntencoes(intencoes) {
+        var nomes = [];
+        var totais = [];
+        var cores = [];
+        var maior = 0;
+
+        for (var i = 0; i < intencoes.length; i++) {
+            nomes.push(intencoes[i].nome);
+            totais.push(Number(intencoes[i].total));
+
+            // a primeira barra (a mais rezada) é dourada, as outras são azuis
+            if (i == 0) {
+                cores.push('#c7a45b');
+            } else {
+                cores.push('#294a73');
+            }
+
+            if (Number(intencoes[i].total) > maior) {
+                maior = Number(intencoes[i].total);
+            }
+        }
+
+        graficoIntencoes.data.labels = nomes;
+        graficoIntencoes.data.datasets[0].data = totais;
+        graficoIntencoes.data.datasets[0].backgroundColor = cores;
+        graficoIntencoes.options.scales.x.max = maior + 1;
+        graficoIntencoes.update();
+    }
+
+    function mostrarTipos(tipos) {
+        var nomes = [];
+        var totais = [];
+        var soma = 0;
+
+        // 1º laço: separa nomes e totais e soma tudo
+        for (var i = 0; i < tipos.length; i++) {
+            nomes.push(tipos[i].nome);
+            totais.push(Number(tipos[i].total));
+            soma = soma + Number(tipos[i].total);
+        }
+
+        graficoTipos.data.labels = nomes;
+        graficoTipos.data.datasets[0].data = totais;
+        graficoTipos.update();
+
+        // 2º laço: calcula a porcentagem de cada tipo e monta a lista
+        var lista = '';
+        var maior = 0;
+        var nomeMaior = '';
+
+        for (var i = 0; i < tipos.length; i++) {
+            var porcentagem = 0;
+
+            // só divide se houver orações
+            if (soma > 0) {
+                porcentagem = totais[i] / soma * 100;
+            }
+
+            lista += `<li>
+                <span>${nomes[i]}</span>
+                <strong>${porcentagem.toFixed(0)}%</strong>
+                <div class="barra-percentual"><span style="width: ${porcentagem.toFixed(0)}%"></span></div>
+                <small>${totais[i]} oração(ões)</small>
+            </li>`;
+
+            if (totais[i] > maior) {
+                maior = totais[i];
+                nomeMaior = nomes[i];
+            }
+        }
+
+        document.getElementById('prayer-numbers').innerHTML = lista;
+
+        if (soma == 0) {
+            document.getElementById('prayer-summary').innerHTML = 'Ainda não há orações registradas. Seja o primeiro!';
+        } else {
+            document.getElementById('prayer-summary').innerHTML = `Total de orações: ${soma}. O mais rezado é: ${nomeMaior}.`;
+        }
+    }
+
+    function mostrarSemana(semana) {
+        // a API só devolve os dias que têm oração; os outros ficam com 0
+        var minhaSemana = [0, 0, 0, 0, 0, 0, 0];
+        var comunidadeSemana = [0, 0, 0, 0, 0, 0, 0];
+
+        for (var i = 0; i < semana.voce.length; i++) {
+            var dia = Number(semana.voce[i].dia);
+            minhaSemana[dia] = Math.round(Number(semana.voce[i].minutos));
+        }
+
+        for (var i = 0; i < semana.comunidade.length; i++) {
+            var dia = Number(semana.comunidade[i].dia);
+            comunidadeSemana[dia] = Math.round(Number(semana.comunidade[i].minutos));
+        }
+
+        graficoSemana.data.datasets[0].data = minhaSemana;
+        graficoSemana.data.datasets[1].data = comunidadeSemana;
+        graficoSemana.update();
+    }
+
+    function registrar() {
+        var intencao = Number(document.getElementById('prayer-intention').value);
+        var tipo = Number(document.getElementById('prayer-type').value);
+        var minutos = Number(document.getElementById('prayer-minutes').value);
+
+        document.getElementById('prayer-feedback').innerHTML = 'Registrando...';
+
+        fetch('/oracoes/registrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                idUsuarioServer: Number(idUsuario),
+                intencaoServer: intencao,
+                tipoServer: tipo,
+                minutosServer: minutos
+            })
+        })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    document.getElementById('prayer-feedback').innerHTML = 'Oração registrada!';
+                    carregarDados();
+                } else {
+                    document.getElementById('prayer-feedback').innerHTML = 'Não foi possível registrar. Tente de novo.';
+                }
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                document.getElementById('prayer-feedback').innerHTML = 'Não foi possível conectar ao servidor.';
+            });
+    }
+
+    carregarOpcoes();
+    carregarDados();
+
+</script>

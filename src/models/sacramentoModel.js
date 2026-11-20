@@ -1,6 +1,5 @@
 var database = require("../database/config");
 
-// Sacramentos que ESTE usuário marcou
 function buscarDoUsuario(idUsuario) {
     var instrucaoSql = `
         SELECT s.nome
@@ -11,7 +10,6 @@ function buscarDoUsuario(idUsuario) {
     return database.executar(instrucaoSql, [idUsuario]);
 }
 
-// % de usuários que já receberam cada sacramento (média da comunidade)
 function buscarComunidade() {
     var instrucaoSql = `
         SELECT s.nome,
@@ -30,7 +28,6 @@ function limparDoUsuario(idUsuario) {
     return database.executar(instrucaoSql, [idUsuario]);
 }
 
-// recebe os NOMES, ex.: ['Batismo', 'Crisma']
 function inserirDoUsuario(idUsuario, nomes) {
     var instrucaoSql = `
         INSERT INTO usuarioSacramento (fkUsuario, fkSacramento)
