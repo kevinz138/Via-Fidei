@@ -154,7 +154,6 @@
 
     var dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
 
-    // aparência padrão do Chart.js
     Chart.defaults.color = '#596579';
     Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
     Chart.defaults.font.size = 12;
@@ -306,7 +305,6 @@
             nomes.push(intencoes[i].nome);
             totais.push(Number(intencoes[i].total));
 
-            // a primeira barra (a mais rezada) é dourada, as outras são azuis
             if (i == 0) {
                 cores.push('#c7a45b');
             } else {
@@ -330,7 +328,6 @@
         var totais = [];
         var soma = 0;
 
-        // 1º laço: separa nomes e totais e soma tudo
         for (var i = 0; i < tipos.length; i++) {
             nomes.push(tipos[i].nome);
             totais.push(Number(tipos[i].total));
@@ -341,7 +338,6 @@
         graficoTipos.data.datasets[0].data = totais;
         graficoTipos.update();
 
-        // 2º laço: calcula a porcentagem de cada tipo e monta a lista
         var lista = '';
         var maior = 0;
         var nomeMaior = '';
@@ -349,7 +345,6 @@
         for (var i = 0; i < tipos.length; i++) {
             var porcentagem = 0;
 
-            // só divide se houver orações
             if (soma > 0) {
                 porcentagem = totais[i] / soma * 100;
             }
@@ -377,7 +372,6 @@
     }
 
     function mostrarSemana(semana) {
-        // a API só devolve os dias que têm oração; os outros ficam com 0
         var minhaSemana = [0, 0, 0, 0, 0, 0, 0];
         var comunidadeSemana = [0, 0, 0, 0, 0, 0, 0];
 

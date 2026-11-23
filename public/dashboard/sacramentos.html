@@ -77,11 +77,6 @@
             </section>
             <section class="data-card full">
                 <span class="card-number">03</span>
-                <h2>Quantos já receberam cada sacramento?</h2>
-                <div class="canvas-wrap tall"><canvas id="sacrament-bars"></canvas></div>
-            </section>
-            <section class="data-card full">
-                <span class="card-number">04</span>
                 <h2>Em números: quantas pessoas têm cada sacramento</h2>
                 <ul class="lista-numeros" id="sacrament-numbers"></ul>
                 <p class="lista-resumo" id="sacrament-summary"></p>
@@ -131,11 +126,9 @@
         window.location = '/login.html';
     }
 
-    // a ordem daqui é a mesma dos checkboxes e do gráfico
     var nomes = ['Batismo', 'Crisma', 'Eucaristia', 'Reconciliação', 'Unção', 'Ordem', 'Matrimônio'];
     var zeros = [0, 0, 0, 0, 0, 0, 0];
 
-    // aparência padrão do Chart.js
     Chart.defaults.color = '#596579';
     Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
     Chart.defaults.font.size = 12;
@@ -177,45 +170,7 @@
         }
     });
 
-    var ctxBarras = document.getElementById('sacrament-bars').getContext('2d');
-    var barras = new Chart(ctxBarras, {
-        type: 'bar',
-        data: {
-            labels: nomes,
-            datasets: [{
-                data: zeros,
-                backgroundColor: ['#c7a45b', '#294a73', '#294a73', '#294a73', '#294a73', '#294a73', '#294a73'],
-                borderRadius: 6,
-                barThickness: 22
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#172d50', padding: 10, displayColors: false,
-                    callbacks: {
-                        label: function (item) {
-                            return item.parsed.x + ' pessoa(s)';
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: { display: false, min: 0, grid: { display: false }, border: { display: false } },
-                y: {
-                    grid: { display: false }, border: { display: false },
-                    ticks: { color: '#172d50', font: { family: 'Georgia, serif', size: 14 } }
-                }
-            }
-        }
-    });
-
     function carregarDados() {
-        // pedido 1: os sacramentos desta pessoa
         fetch('/sacramentos/usuario/' + idUsuario)
             .then(function (resposta) {
                 return resposta.json();
@@ -227,7 +182,6 @@
                 console.log(erro);
             });
 
-        // pedido 2: os números da comunidade
         fetch('/sacramentos/comunidade')
             .then(function (resposta) {
                 return resposta.json();
@@ -247,7 +201,6 @@
         for (var i = 0; i < nomes.length; i++) {
             var recebeu = false;
 
-            // procura este sacramento na lista que veio do banco
             for (var j = 0; j < meusSacramentos.length; j++) {
                 if (meusSacramentos[j].nome == nomes[i]) {
                     recebeu = true;
@@ -268,7 +221,6 @@
     }
 
     function mostrarComunidade(comunidade) {
-        var totais = [];
         var percentuais = [];
         var lista = '';
         var maior = 0;
@@ -278,7 +230,6 @@
             var total = 0;
             var percentual = 0;
 
-            // procura este sacramento na resposta da API
             for (var j = 0; j < comunidade.length; j++) {
                 if (comunidade[j].nome == nomes[i]) {
                     total = Number(comunidade[j].total);
@@ -286,10 +237,8 @@
                 }
             }
 
-            totais.push(total);
-            percentuais.push(percentual / 100);
+                percentuais.push(percentual / 100);
 
-            // uma linha da lista "Em números"
             lista += `<li>
                 <span>${nomes[i]}</span>
                 <strong>${percentual.toFixed(0)}%</strong>
@@ -297,22 +246,15 @@
                 <small>${total} pessoa(s)</small>
             </li>`;
 
-            // guarda o sacramento mais recebido
             if (total > maior) {
                 maior = total;
                 nomeMaior = nomes[i];
             }
         }
 
-        // radar e barras
         radar.data.datasets[1].data = percentuais;
         radar.update();
 
-        barras.data.datasets[0].data = totais;
-        barras.options.scales.x.max = maior + 1;
-        barras.update();
-
-        // lista e frase
         document.getElementById('sacrament-numbers').innerHTML = lista;
 
         if (maior == 0) {
