@@ -568,6 +568,163 @@ h1 em {
 ------------------------------
 */
 
+/* Topo */
+
+.fe-topo {
+    padding: 90px 0 70px;
+    background: var(--marfim);
+}
+
+.fe-topo h1 {
+    max-width: 820px;
+    color: var(--azul-marinho);
+    font-size: 64px;
+}
+
+.fe-topo h1 em {
+    color: var(--dourado);
+}
+
+.fe-topo-texto {
+    max-width: 640px;
+    margin-bottom: 36px;
+    color: var(--cinza);
+    font-size: 17px;
+}
+
+.fe-indice {
+    display: flex;
+    gap: 14px;
+}
+
+.fe-indice a {
+    padding: 12px 22px;
+    border: 1px solid var(--borda);
+    border-radius: 50px;
+    background: var(--branco);
+    color: var(--azul-marinho);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.fe-indice a:hover {
+    border-color: var(--dourado);
+}
+
+/* Painéis */
+
+.fe-lista {
+    padding: 0 0 90px;
+    background: var(--marfim);
+}
+
+.fe-lista .container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.fe-painel {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    align-items: center;
+    gap: 60px;
+    padding: 50px;
+    border: 1px solid var(--borda);
+    border-radius: 28px;
+    background: var(--branco);
+}
+
+.fe-painel.escuro {
+    border-color: var(--azul-marinho);
+    background: var(--azul-marinho);
+}
+
+.fe-imagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    border-radius: 24px;
+    background: var(--marfim);
+}
+
+.fe-painel.escuro .fe-imagem {
+    background: var(--champanhe);
+}
+
+.fe-imagem img {
+    width: 240px;
+    height: 240px;
+    object-fit: contain;
+}
+
+.fe-numero {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--dourado);
+    font-family: Georgia, serif;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+}
+
+.fe-texto h2 {
+    margin-bottom: 20px;
+    font-size: 42px;
+}
+
+.fe-texto p {
+    margin-bottom: 16px;
+    color: var(--cinza);
+    font-size: 16px;
+}
+
+.fe-texto .fe-versiculo {
+    margin: 26px 0 0;
+    padding-left: 22px;
+    border-left: 2px solid var(--dourado);
+    color: var(--azul-classico);
+    font-family: Georgia, serif;
+    font-size: 19px;
+    font-style: italic;
+}
+
+.fe-painel.escuro h2 {
+    color: var(--branco);
+}
+
+.fe-painel.escuro .fe-texto p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.fe-painel.escuro .fe-versiculo {
+    color: var(--champanhe);
+}
+
+/* Final */
+
+.fe-final {
+    text-align: center;
+    background: var(--champanhe);
+}
+
+.fe-final .container {
+    max-width: 760px;
+}
+
+.fe-final p:not(.eyebrow-dourado) {
+    margin-bottom: 24px;
+    color: var(--azul-marinho);
+}
+
+/* 
+------------------------------
+          HISTORIA
+------------------------------
+*/
+
 /* Parte Início */
 
 .inner-hero {
@@ -860,6 +1017,10 @@ h1 em {
     border-left: 2px solid var(--dourado);
     color: var(--cinza);
     font-size: 17px;
+}
+
+.dedication-intro-copy p {
+    margin-bottom: 10px;
 }
 
 /* Parte fotos */

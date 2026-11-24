@@ -31,7 +31,6 @@ function salvar(req, res) {
 
     sacramentoModel.limparDoUsuario(idUsuario)
         .then(function () {
-            // se a pessoa desmarcou tudo, não há nada para inserir
             if (sacramentos.length == 0) {
                 return;
             }

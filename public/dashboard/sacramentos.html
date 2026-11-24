@@ -99,14 +99,12 @@
             </div>
             <div class="explore">
                 <strong>Explore</strong>
-                <a href="../HTML/index.html">Início</a>
-                <a href="../HTML/historia.html">Nossa fé</a>
-                <a href="../HTML/dedicatoria.html">Dedicatória</a>
+                <a href="sacramentos.html">Sacramento</a>
+                <a href="oracao.html">Oração</a>
             </div>
             <div class="account">
                 <strong>Sua conta</strong>
-                <a href="sacramentos.html">Meu caminho</a>
-                <a href="oracao.html">Corrente de oração</a>
+                <span id="nome-usuario-footer"></span>
             </div>
         </div>
         <div class="container footer-bottom">
@@ -120,6 +118,7 @@
 
 <script>
     document.getElementById('nome-usuario').innerHTML = sessionStorage.NOME_USUARIO;
+    document.getElementById('nome-usuario-footer').innerHTML = sessionStorage.NOME_USUARIO;
 
     var idUsuario = sessionStorage.ID_USUARIO;
     if (idUsuario == null) {

@@ -5,6 +5,9 @@ header {
     padding: 20px;
     background-color: var(--azul-marinho);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 header .container {

@@ -18,8 +18,6 @@ function registrar(idUsuario, idIntencao, idTipo, minutos) {
     return database.executar(instrucaoSql, [idUsuario, idIntencao, idTipo, minutos]);
 }
 
-// cards 02 e 03
-// Quantas pessoas diferentes rezaram HOJE
 function pessoasHoje() {
     var instrucaoSql = `
         SELECT COUNT(DISTINCT fkUsuario) AS total
@@ -29,7 +27,6 @@ function pessoasHoje() {
     return database.executar(instrucaoSql);
 }
 
-// Minutos que ESTE usuário rezou na semana atual
 function minutosDaSemana(idUsuario) {
     var instrucaoSql = `
         SELECT COALESCE(SUM(minutos), 0) AS total
@@ -40,7 +37,6 @@ function minutosDaSemana(idUsuario) {
     return database.executar(instrucaoSql, [idUsuario]);
 }
 
-// gráfico 04: o que a comunidade mais reza (top 5)
 function rankingIntencoes() {
     var instrucaoSql = `
         SELECT i.nome, COUNT(o.idOracao) AS total
@@ -53,7 +49,6 @@ function rankingIntencoes() {
     return database.executar(instrucaoSql);
 }
 
-// gráfico 05: como a comunidade reza (rosca)
 function totalPorTipo() {
     var instrucaoSql = `
         SELECT t.nome, COUNT(o.idOracao) AS total
@@ -65,8 +60,6 @@ function totalPorTipo() {
     return database.executar(instrucaoSql);
 }
 
-// gráfico 06: semana (linha)
-// WEEKDAY(): 0 = segunda ... 6 = domingo
 function semanaDoUsuario(idUsuario) {
     var instrucaoSql = `
         SELECT WEEKDAY(dataHora) AS dia, SUM(minutos) AS minutos
@@ -78,7 +71,6 @@ function semanaDoUsuario(idUsuario) {
     return database.executar(instrucaoSql, [idUsuario]);
 }
 
-// Média da comunidade: minutos por pessoa que rezou naquele dia
 function semanaDaComunidade() {
     var instrucaoSql = `
         SELECT WEEKDAY(dataHora) AS dia,
