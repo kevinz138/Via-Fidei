@@ -1,4 +1,4 @@
-<p align="center"><img src="public/imgs/readme/banner.svg" alt="Um só Deus, a Igreja e os santos" width="1000"></p>
+<p align="center"><img src="public/imgs/readme/banner.svg" alt="Via Fidei, caminho da fé" width="1000"></p>
 
 <div align="center">
 
@@ -62,6 +62,8 @@ O tema vem de uma experiência pessoal: o autor foi batizado na infância, mas s
     <td><b>A vida de oração</b><br>A Missa, o Terço e a oração pessoal como caminho de aproximação de Deus.</td>
   </tr>
 </table>
+
+<p align="center"><img src="public/imgs/readme/jesus.svg" alt="Jesus de braços abertos, em um abraço de luz: um só Deus, a Igreja e os santos" width="1000"></p>
 
 <p align="center"><img src="public/imgs/readme/caminho-corrente.svg" alt="Meu caminho dos sacramentos e corrente de oração" width="880"></p>
 
