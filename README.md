@@ -1,12 +1,8 @@
 <p align="center"><img src="public/imgs/readme/banner.svg" alt="Via Fidei, caminho da fé" width="1000"></p>
 
 <div align="center">
-
-<img src="public/imgs/logo-cruz.svg" alt="Cruz" width="90">
-
-# Via Fidei
-
-**Um só Deus, a Igreja e os santos**
+  
+  **Um só Deus, a Igreja e os santos**
 
 <img src="https://img.shields.io/badge/tema-f%C3%A9%20cat%C3%B3lica-c7a45b?style=for-the-badge" alt="Tema: fé católica">
 <img src="https://img.shields.io/badge/projeto-acad%C3%AAmico-1f3864?style=for-the-badge" alt="Projeto acadêmico">
