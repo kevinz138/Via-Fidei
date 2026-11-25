@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 56" width="880" height="56" role="img" aria-label="Divisor ornamental">
+<defs><linearGradient id="linha" x1="0" x2="1"><stop offset="0" stop-color="#c7a45b" stop-opacity="0"/><stop offset=".5" stop-color="#c7a45b"/><stop offset="1" stop-color="#c7a45b" stop-opacity="0"/></linearGradient><linearGradient id="ouro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e3a1"/><stop offset=".5" stop-color="#c7a45b"/><stop offset="1" stop-color="#8a6a2c"/></linearGradient></defs>
+<rect x="70" y="27.2" width="310" height="1.6" fill="url(#linha)" transform="translate(0 0)"/>
+<rect x="500" y="27.2" width="310" height="1.6" fill="url(#linha)" transform="scale(1 1)"/>
+<circle cx="400" cy="28" r="2.4" fill="#fff6cf" opacity="0"><animate attributeName="cx" values="400;70" dur="3.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="3.6s" repeatCount="indefinite"/></circle>
+<circle cx="480" cy="28" r="2.4" fill="#fff6cf" opacity="0"><animate attributeName="cx" values="480;810" dur="3.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="3.6s" repeatCount="indefinite"/></circle>
+<path d="M376 28 l4 -4 l4 4 l-4 4 z" fill="#c7a45b" opacity=".8"/><path d="M496 28 l4 -4 l4 4 l-4 4 z" fill="#c7a45b" opacity=".8"/><g transform="translate(440 30)"><path d="M0 -22 C10 -10 12 -2 8 6 C5 12 -5 12 -8 6 C-12 -2 -8 -10 0 -22 Z" fill="url(#ouro)"><animateTransform attributeName="transform" type="scale" values="1 1;1.1 1.18;0.95 1;1 1" dur="1.8s" repeatCount="indefinite"/></path><path d="M0 -8 C5 -2 5 3 0 6 C-5 3 -5 -2 0 -8 Z" fill="#fff6cf"><animate attributeName="opacity" values=".6;1;.6" dur="1.8s" repeatCount="indefinite"/></path></g>
+</svg>
