@@ -1,3 +1,5 @@
+<p align="center"><img src="public/imgs/readme/banner.svg" alt="Via Fidei, caminho da fé" width="1000"></p>
+
 <div align="center">
 
 <img src="public/imgs/logo-cruz.svg" alt="Cruz" width="90">
@@ -22,6 +24,10 @@
 
 > “Deus é o único caminho que temos certeza de que é certo.”
 
+<p align="center"><img src="public/imgs/readme/versiculos.svg" alt="Versículos e testemunhos em rotação" width="880"></p>
+
+<p align="center"><img src="public/imgs/readme/divisor-cruz.svg" alt="" width="880"></p>
+
 ## ✝️ Sobre o projeto
 
 A fé católica faz parte da história e da cultura do Brasil, mas muita gente, inclusive quem foi batizado, conhece pouco do que a Igreja realmente ensina. Este projeto nasceu para ajudar a preencher essa lacuna.
@@ -29,6 +35,10 @@ A fé católica faz parte da história e da cultura do Brasil, mas muita gente, 
 O objetivo não é convencer ninguém a seguir uma religião. A proposta é informar com clareza e respeito, mostrando em que os católicos acreditam e como essa fé é vivida no dia a dia, sempre com base em fontes oficiais da Igreja.
 
 O tema vem de uma experiência pessoal: o autor foi batizado na infância, mas só neste ano passou a viver a fé de verdade, a partir da catequese e da preparação para a Crisma. A história dessa aproximação, de quem acreditava em Deus e passou a buscá-lo, é contada em formato de storytelling e liga o conteúdo à vida real.
+
+<p align="center"><img src="public/imgs/readme/jornada.svg" alt="A caminhada: batismo, busca, catequese e crisma" width="880"></p>
+
+<p align="center"><img src="public/imgs/readme/divisor-estrelas.svg" alt="" width="880"></p>
 
 ## 🕊️ O tema
 
@@ -51,6 +61,8 @@ O tema vem de uma experiência pessoal: o autor foi batizado na infância, mas s
   </tr>
 </table>
 
+<p align="center"><img src="public/imgs/readme/divisor-rosa.svg" alt="" width="880"></p>
+
 ## 🌹 Testemunhos que inspiram
 
 <table>
@@ -64,6 +76,8 @@ O tema vem de uma experiência pessoal: o autor foi batizado na infância, mas s
 </table>
 
 **Santo Agostinho (354–430)**, bispo de Hipona e Doutor da Igreja, viveu distante da fé até se converter. A sua história, de quem estava longe e se aproximou de Deus, conversa com a caminhada que este projeto conta.
+
+<p align="center"><img src="public/imgs/readme/divisor-losango.svg" alt="" width="880"></p>
 
 ## 🎨 Identidade visual
 
@@ -81,6 +95,8 @@ Os logos seguem um estilo dourado, com a cor principal **#c7a45b**, e estão em 
   </tr>
 </table>
 
+<p align="center"><img src="public/imgs/readme/paleta.svg" alt="Paleta de cores do projeto" width="880"></p>
+
 <details>
 <summary>Significado de cada logo</summary>
 
@@ -94,6 +110,8 @@ Os logos seguem um estilo dourado, com a cor principal **#c7a45b**, e estão em 
 | Terço | A vida de oração, representada pelo rosário. |
 
 </details>
+
+<p align="center"><img src="public/imgs/readme/divisor-terco.svg" alt="" width="880"></p>
 
 ## 📁 Estrutura do repositório
 
@@ -109,6 +127,8 @@ Projeto-Individual-Catolico/
 └── README.md
 ```
 
+<p align="center"><img src="public/imgs/readme/divisor-chama.svg" alt="" width="880"></p>
+
 ## 🖼️ Como usar os logos
 
 Nas páginas dentro de `public/HTML`, o caminho precisa subir uma pasta:
@@ -121,6 +141,8 @@ No CSS, dentro de `public/css`, vale a mesma regra: `url('../imgs/logo-cruz.svg'
 
 Os SVGs escalam sem perder qualidade e têm fundo transparente, então funcionam em fundos claros e escuros.
 
+<p align="center"><img src="public/imgs/readme/divisor-estrelas.svg" alt="" width="880"></p>
+
 ## 🔗 Fontes principais
 
 - [Catecismo da Igreja Católica (Santa Sé)](http://www.vatican.va/archive/cathechism_po/index_new/prima-pagina-cic_po.html)
@@ -131,6 +153,11 @@ Os SVGs escalam sem perder qualidade e têm fundo transparente, então funcionam
 - [Vatican News: Chiara Corbella Petrillo](https://www.vaticannews.va/it/chiesa/news/2024-06/chiara-corbella-petrillo-inchiesta-beatificazione-diocesi-roma.html)
 - [Lei nº 6.802/1980: feriado de Nossa Senhora Aparecida (Planalto)](https://www.planalto.gov.br/ccivil_03/LEIS/L6802.htm)
 
+<p align="center"><img src="public/imgs/readme/divisor-cruz.svg" alt="" width="880"></p>
+
 ## ✍️ Autor
 
 Kevin Alves Silva, curso de Análise e Desenvolvimento de Sistemas, São Paulo Tech School.
+
+
+<p align="center"><img src="public/imgs/readme/rodape.svg" alt="Ad maiorem Dei gloriam" width="880"></p>
