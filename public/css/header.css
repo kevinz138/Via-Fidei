@@ -97,33 +97,26 @@ header .container {
     gap: 28px;
 }
 
-.btn-default a {
-    text-decoration: none;
-}
-
 .btn-login {
-    border: none;
-    background-color: transparent;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-login a {
-    color: var(--branco);
-    text-decoration: none;
-}
-
-.btn-cadastro {
-    border: 1px solid var(--dourado);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--dourado);
-    padding: 14px 16px;
-    border-radius: 50px;
+    padding: 14px 6px;
+    border: none;
+    background-color: transparent;
+    color: var(--branco);
+    font-size: 13px;
+    line-height: 1;
 }
 
-.btn-cadastro a {
+.btn-cadastro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 16px;
+    border: 1px solid var(--dourado);
+    border-radius: 50px;
+    background-color: var(--dourado);
     color: var(--azul-marinho);
     font-size: 13px;
     font-weight: 700;

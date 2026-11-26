@@ -44,25 +44,25 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nome">Nome</label>
-                            <input type="text" id="nome" placeholder="Seu nome" required>
+                            <input type="text" id="nome" oninput="validarCampos()" placeholder="Seu nome" required>
                         </div>
                         <div class="form-group">
                             <label for="sobrenome">Sobrenome</label>
-                            <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+                            <input type="text" id="sobrenome" oninput="validarCampos()" placeholder="Sobrenome" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required>
+                        <input id="email" oninput="validarCampos()" name="email" type="email" placeholder="seuemail@exemplo.com" required>
                     </div>
                     <div class="form-group">
                         <label for="senha">Crie uma senha</label>
-                        <input id="senha" name="senha" type="password" placeholder="Sua senha" required>
+                        <input id="senha" oninput="validarCampos()" name="senha" type="password" placeholder="Sua senha" required>
                         <ul class="senha-regras">
-                            <li>Mínimo de 8 caracteres</li>
-                            <li>Uma letra maiúscula e uma minúscula</li>
-                            <li>Um número</li>
-                            <li>Um caractere especial: ! @ # $ % & * ?</li>
+                            <li id="regra_tamanho">Mínimo de 8 caracteres</li>
+                            <li id="regra_letras">Uma letra maiúscula e uma minúscula</li>
+                            <li id="regra_numero">Um número</li>
+                            <li id="regra_especial">Um caractere especial: ! @ # $ % & * ?</li>
                         </ul>
                     </div>
                     <button class="btn-default btn-entrar" onclick="cadastrar()" type="button">
@@ -83,14 +83,7 @@
 </html>
 
 <script>
-    function cadastrar() {
-        var nomeVar = nome.value;
-        var sobrenomeVar = sobrenome.value;
-        var emailVar = email.value;
-        var senhaVar = senha.value;
-
-        var temMaiuscula = senhaVar != senhaVar.toLowerCase();   // se mudou ao virar minúscula, tinha maiúscula
-        var temMinuscula = senhaVar != senhaVar.toUpperCase();   // se mudou ao virar maiúscula, tinha minúscula
+    function verificarSenha(senhaVar) {
         var temNumero = false;
         var temEspecial = false;
 
@@ -102,6 +95,51 @@
                 temEspecial = true;
             }
         }
+
+        return {
+            tamanho: senhaVar.length >= 8,
+            maiuscula: senhaVar != senhaVar.toLowerCase(),
+            minuscula: senhaVar != senhaVar.toUpperCase(),
+            numero: temNumero,
+            especial: temEspecial
+        };
+    }
+
+    function marcar(elemento, ok) {
+        if (ok) {
+            elemento.classList.add("valido");
+        } else {
+            elemento.classList.remove("valido");
+        }
+    }
+
+    function validarCampos() {
+        var emailVar = email.value;
+        var regras = verificarSenha(senha.value);
+
+        marcar(nome, nome.value.trim().length >= 2);
+        marcar(sobrenome, sobrenome.value.trim().length >= 2);
+        marcar(email, emailVar.indexOf("@") > 0 && emailVar.indexOf(".") > emailVar.indexOf("@") + 1 && emailVar.indexOf(" ") == -1 && !emailVar.endsWith("."));
+
+        marcar(regra_tamanho, regras.tamanho);
+        marcar(regra_letras, regras.maiuscula && regras.minuscula);
+        marcar(regra_numero, regras.numero);
+        marcar(regra_especial, regras.especial);
+
+        marcar(senha, regras.tamanho && regras.maiuscula && regras.minuscula && regras.numero && regras.especial);
+    }
+
+    function cadastrar() {
+        var nomeVar = nome.value;
+        var sobrenomeVar = sobrenome.value;
+        var emailVar = email.value;
+        var senhaVar = senha.value;
+
+        var regras = verificarSenha(senhaVar);
+        var temMaiuscula = regras.maiuscula;
+        var temMinuscula = regras.minuscula;
+        var temNumero = regras.numero;
+        var temEspecial = regras.especial;
 
         cardErro.style.display = "block";
 
