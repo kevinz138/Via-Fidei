@@ -95,7 +95,7 @@ h1 em {
 .eyebrow-dourado {
     margin-bottom: 16px;
     color: var(--dourado);
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -103,7 +103,7 @@ h1 em {
 
 .eyebrow-light {
     margin-bottom: 16px;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -1051,6 +1051,7 @@ h1 em {
     width: 280px;
     height: 300px;
     border-radius: 0px 90px 0px 0px;
+    object-fit: cover;
 }
 
 .portrait-grid {
