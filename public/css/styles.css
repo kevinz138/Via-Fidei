@@ -1331,6 +1331,49 @@ input.valido:focus {
     font-family: inherit;
 }
 
+/* campo de senha com o olhinho de mostrar/esconder */
+.senha-campo {
+    position: relative;
+}
+
+.senha-campo input {
+    padding-right: 52px;
+}
+
+.btn-olho {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--azul-claro);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+}
+
+.btn-olho svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-olho:hover {
+    color: var(--azul-marinho);
+    background: rgba(23, 45, 80, 0.06);
+}
+
+.btn-olho:focus-visible {
+    outline: 2px solid var(--dourado);
+    outline-offset: 1px;
+}
+
 .senha-regras {
     margin: 8px 0 0;
     padding-left: 18px;
@@ -1513,7 +1556,7 @@ input.valido:focus {
     align-items: center;
     gap: 8px;
     color: rgba(255, 255, 255, 0.82);
-    font-size: 12px;
+    font-size: 15px;
     letter-spacing: 0;
     text-transform: none;
 }
@@ -1555,7 +1598,7 @@ input.valido:focus {
     min-height: 17px;
     margin: 12px 0 0;
     color: var(--champanhe);
-    font-size: 10px;
+    font-size: 15px;
 }
 
 .canvas-wrap.radar {
@@ -1592,13 +1635,6 @@ input.valido:focus {
 ------------------------------
 */
 
-/*
-------------------------------
-   DASHBOARD DE ORAÇÃO
-   (colar no FINAL do styles.css)
-------------------------------
-*/
-
 .data-top-grid {
     display: grid;
     grid-template-columns: 1.15fr 0.95fr 0.95fr;
@@ -1614,7 +1650,7 @@ input.valido:focus {
 
 .prayer-form label {
     color: var(--champanhe);
-    font-size: 10px;
+    font-size: 13px;
     letter-spacing: 0.08em;
 }
 
@@ -1650,7 +1686,7 @@ input.valido:focus {
 .stat-card>p {
     margin: 0 0 13px;
     color: var(--dourado);
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.28em;
     text-transform: uppercase;

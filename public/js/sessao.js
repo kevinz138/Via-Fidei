@@ -34,3 +34,23 @@ function finalizarAguardar(texto) {
     }
 }
 
+function mostrarSenha() {
+    var campo = document.getElementById("senha");
+    var olhoAberto = document.getElementById("olho_aberto");
+    var olhoFechado = document.getElementById("olho_fechado");
+    var botao = document.getElementById("btn_olho");
+
+    if (campo.type == "password") {
+        campo.type = "text";
+        olhoAberto.style.display = "none";
+        olhoFechado.style.display = "block";
+        botao.title = "Esconder senha";
+        botao.setAttribute("aria-label", "Esconder senha");
+    } else {
+        campo.type = "password";
+        olhoAberto.style.display = "block";
+        olhoFechado.style.display = "none";
+        botao.title = "Mostrar senha";
+        botao.setAttribute("aria-label", "Mostrar senha");
+    }
+}

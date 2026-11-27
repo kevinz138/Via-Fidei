@@ -87,7 +87,7 @@ header .container {
 .nav-item a {
     text-decoration: none;
     color: var(--branco);
-    font-size: 13px;
+    font-size: 14px;
     position: relative;
     display: inline-block;
 }
